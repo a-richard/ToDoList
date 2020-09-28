@@ -3,36 +3,61 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>To Do List</title>
+    <title>ToDo list</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
       rel="stylesheet"
     />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
     <div class="box" id="heading">
-      <h1><%= day %></h1>
+      <h1><%= title %></h1>
     </div>
 
     <div class="box">
-      <form action="/" method="post">
-        <% for (let i = 0; i < list.length; i++) { %>
-        <div class="item">
-          <input type="checkbox" name="<%= i %>" />
-          <p><%= list[i] %></p>
-        </div>
-        <% } %>
+      <% todos.forEach((todo) => { %>
+      <form action="/delete" method="post">
+        <input type="hidden" name="list" value="<%= title %>" />
         <div class="item">
           <input
-            type="text"
-            name="newItem"
-            placeholder="New Item"
-            autocomplete="off"
+            type="checkbox"
+            name="checkbox"
+            value="<%= todo._id %>"
+            onChange="this.form.submit()"
           />
-          <button type="submit">+</button>
+          <p><%= todo.name %></p>
         </div>
       </form>
+      <% }) %>
+      <form class="item" action="/" method="post">
+        <input
+          id="textInput"
+          type="text"
+          name="newItem"
+          placeholder="New Item"
+          autocomplete="off"
+        />
+        <button
+          id="formButton"
+          type="submit"
+          name="list"
+          value="<%= title %>"
+          disabled
+        >
+          +
+        </button>
+      </form>
     </div>
+    <footer><p class="attribution">&copy Aurélien Richard 2020</p></footer>
+    <script>
+      const input = document.querySelector('#textInput');
+      const button = document.querySelector('#formButton');
+      input.onkeyup = () => {
+        if (input.value) button.removeAttribute('disabled');
+        else button.setAttribute('disabled', '');
+      };
+    </script>
   </body>
 </html>
